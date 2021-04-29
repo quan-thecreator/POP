@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Step 1:, We maintain your privacy while you help save the world. No signup. Seamless volunteering.">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>Volunteer Dashboard</title>
+    <link rel="stylesheet" href="nicepage.css" media="screen">
+<link rel="stylesheet" href="Volunteer-Dashboard.css" media="screen">
+    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <meta name="generator" content="Nicepage 3.13.1, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "",
+		"url": "index.html",
+		"logo": "images/POPLogo.svg"
+}</script>
+    <meta property="og:title" content="Volunteer Dashboard">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#478ac9">
+    <link rel="canonical" href="index.html">
+    <meta property="og:url" content="index.html">
+  </head>
+  <body class="u-body">
+  	<script  type="text/javascript">
+    var web3;
+    var userData;
+    var contract;
+    var accounts;
+    const abi =[
+        {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "volunteer",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "acceptor",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                }
+            ],
+            "name": "requestToVoluteer",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                }
+            ],
+            "name": "rewarded",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "addToValue",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "approveAsVolunteer",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getMetadataPOP",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getMetadataPOPa",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "listOfPartners",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "org",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "orgName",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "orgEmail",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "org",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "orgEmail",
+                    "type": "string"
+                }
+            ],
+            "name": "registerAsOrg",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "org",
+                    "type": "address"
+                }
+            ],
+            "name": "registerAsVolunteer",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "URI",
+                    "type": "string"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "isBonus",
+                    "type": "bool"
+                }
+            ],
+            "name": "reward",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "acceptor",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "org",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "tokenID",
+                    "type": "uint256"
+                }
+            ],
+            "name": "tradePOP",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transfer",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ];
+    async function connect(){
+        if(window.ethereum){
+            window.ethereum.enable();
+            window.web3 = window.ethereum;
+
+            web3 =  new Web3(window.web3);
+            var networkId = await window.web3.eth.net.getId();
+            //await sleep(2000);
+
+            console.log(networkId);
+            if(networkId != 1287) alert("Not on the right network!!!!!! \n we need to be on MoonBase Alpha");
+            //var networkData = SocialNetwork.networks[networkId];
+            // netId =  window.web3.eth.net.getId();
+            accounts = await web3.eth.getAccounts();
+            //this.setState({ account: accounts[0] });
+            // Network ID
+            //var networkId = await web3.eth.net.getId();
+            //const networkData = SocialNetwork.networks[networkId];
+            contract = new web3.eth.Contract(
+                abi,
+                '0x3e652dFAfbe8dAB8F927b77991263bAE9Fc41F5F'
+            );
+            web3.eth.defaultAccount = window.web3.selctedAdress;
+            await console.log(window.ethereum.selectedAddress);
+            const signature = await web3.eth.sign("Hoping you can see this", window.ethereum.selectedAddress);
+            accounts[0] = web3.eth.accounts.recover("Hoping you can see this",
+                signature);
+            console.log(accounts[0].toString());
+            //web3.eth.accounts.sign('You can see this', '0x4c0883a69102937d6231471b5dbb6204fe5129617082792ae468d01a3f362318');
+
+
+
+        }
+        else{
+            alert("you should consider getting meta mask");
+        }
+    }
+
+    function addToValue(){
+        var count;
+        var amountInether = prompt("how many devs?", "1");
+        contract.methods.addToValue().send({
+            from:accounts[0], gas:3000000, value:web3.utils.toWei(amountInether.toString(), 'ether')
+        }).on('transactionHash', function(hash) {
+
+            alert("SUCCESS! The tx with pop up in 15 seconds from now");
+            var transactionUrl = "https://moonbase-blockscout.testnet.moonbeam.network/tx/" + hash.toString();
+            setTimeout(function(){
+                window.open(transactionUrl, "_blank");
+            }, 15000);
+        });
+    }
+    function register(){
+        var count =0;
+        contract.methods.approveAsVolunteer().send({
+            from:accounts[0], gas:3000000,
+        })
+            .on('transactionHash', function(hash) {
+
+                alert("SUCCESS! The tx with pop up in 15 seconds from now");
+                var transactionUrl = "https://moonbase-blockscout.testnet.moonbeam.network/tx/" + hash.toString();
+                setTimeout(function(){
+                    window.open(transactionUrl, "_blank");
+                }, 15000);
+
+            });
+    }
+    async function registerAtOrg(){
+        var count =0;
+        var orgAddress = prompt("What is that organization's Ether Address?","0x9423A3135B2f08511C4d388ee28d3643489274E0");
+        await contract.methods.registerAsVolunteer(orgAddress).send({
+            from:accounts[0], gas:3000000,
+        },)
+            .on('transactionHash', function(hash) {
+
+                alert("SUCCESS! The tx with pop up in 15 seconds from now");
+                var transactionUrl = "https://moonbase-blockscout.testnet.moonbeam.network/tx/" + hash.toString();
+                setTimeout(function(){
+                    window.open(transactionUrl, "_blank");
+                }, 15000);
+
+            });
+    }
+
+    async function trade(){
+        var count =0;
+        var orgAddress = prompt("What org do you want this person to  volunteer at?(Ether Address)","0x9423A3135B2f08511C4d388ee28d3643489274E0");
+        var volunteerAddress = prompt("Who is this person(EtherAddress)","0x9423A3135B2f08511C4d388ee28d3643489274E0");
+        var tonkenID = prompt("token ID", "0x9423A3135B2f08511C4d388ee28d3643489274E0");
+        await contract.methods.tradePOP(volunteerAddress,orgAddress,tonkenID).send({
+            from:accounts[0], gas:3000000,
+        },)
+            .on('transactionHash', function(hash) {
+
+
+                alert("SUCCESS! The tx with pop up in 15 seconds from now");
+                var transactionUrl = "https://moonbase-blockscout.testnet.moonbeam.network/tx/" + hash.toString();
+                setTimeout(function(){
+                    window.open(transactionUrl, "_blank");
+                }, 15000);
+
+            });
+    }
+    async function getPOPdata(){
+        var tokenID = prompt("tokenID?", "1");
+        contract.methods.getMetadataPOP(tokenID).call({from: accounts[0]})
+            .then(function(result){
+            alert(result);
+            });
+
+    }
+    async function getPOPadata(){
+        var tokenID = prompt("tokenID?", "1");
+        contract.methods.getMetadataPOPa(tokenID).call({from: accounts[0]})
+            .then(function(result){
+                alert(result);
+            });
+    }
+</script>
+  	<header class="u-clearfix u-header u-header" id="sec-c6d7"><div class="u-clearfix u-sheet u-sheet-1">
+        <a href="https://nicepage.com" class="u-image u-logo u-image-1" data-image-width="1600" data-image-height="1388">
+          <img src="images/POPLogo.svg" class="u-logo-image u-logo-image-1" data-image-width="208.4817">
+        </a>
+        <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
+          <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px;">
+            <a class="u-button-style u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="#">
+              <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use></svg>
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><symbol id="menu-hamburger" viewBox="0 0 16 16" style="width: 16px; height: 16px;"><rect y="1" width="16" height="2"></rect><rect y="7" width="16" height="2"></rect><rect y="13" width="16" height="2"></rect>
+</symbol>
+</defs></svg>
+            </a>
+          </div>
+          <div class="u-custom-menu u-nav-container">
+            <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="Home.html" style="padding: 10px 20px;">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="About.html" style="padding: 10px 20px;">About</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="Contact.html" style="padding: 10px 20px;">Contact</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="Get-started.html" target="_blank" style="padding: 10px 20px;">Get Started</a>
+</li></ul>
+          </div>
+          <div class="u-custom-menu u-nav-container-collapse">
+            <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
+              <div class="u-sidenav-overflow">
+                <div class="u-menu-close"></div>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Home.html" style="padding: 10px 20px;">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="About.html" style="padding: 10px 20px;">About</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Contact.html" style="padding: 10px 20px;">Contact</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="Get-started.html" target="_blank" style="padding: 10px 20px;">Get Started</a>
+</li></ul>
+              </div>
+            </div>
+            <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
+          </div>
+        </nav>
+      </div></header>
+    <section class="u-clearfix u-grey-5 u-section-1" id="carousel_3ca9">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout" style="">
+            <div class="u-layout-row" style="">
+              <div class="u-container-style u-layout-cell u-size-35 u-layout-cell-1">
+                <div class="u-container-layout u-container-layout-1">
+                  <div class="u-align-left u-container-style u-expanded-width u-group u-palette-3-dark-3 u-group-1">
+                    <div class="u-container-layout u-container-layout-2">
+                      <h1 class="u-text u-text-palette-3-base u-text-1">Step 1:</h1>
+                      <p class="u-text u-text-2">Connect you Metamask wallet.(or any web3)&nbsp;</p>
+                      <a onclick="connect()" class="u-active-white u-border-2 u-border-white u-btn u-button-style u-hover-white u-none u-text-active-palette-3-base u-text-body-alt-color u-text-hover-palette-3-base u-btn-1" data-animation-name="" data-animation-duration="0" data-animation-delay="0" data-animation-direction="">Connect</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-align-justify u-container-style u-layout-cell u-size-25 u-layout-cell-2">
+                <div class="u-container-layout u-container-layout-3">
+                  <h1 class="u-align-left u-text u-text-3">We maintain your privacy while you help save the world. No signup. Seamless volunteering.</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    
+    <footer class="u-align-left u-clearfix u-footer u-grey-80 u-footer" id="sec-3cba"><div class="u-clearfix u-sheet u-sheet-1"></div></footer>
+    <section class="u-backlink u-clearfix u-grey-80">
+      <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
+        <span>Web Templates</span>
+      </a>
+      <p class="u-text">
+        <span>created with</span>
+      </p>
+      <a class="u-link" href="https://nicepage.com/html-website-builder" target="_blank">
+        <span>HTML Builder</span>
+      </a>. 
+    </section>
+  </body>
+</html>
